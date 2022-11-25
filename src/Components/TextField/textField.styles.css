@@ -1,0 +1,12 @@
+.textField {
+    width: 100%;
+    min-height: 40px;
+    padding: 11px 12px;
+    margin-bottom: 20px; 
+    border: 1px solid #75BEEE;
+    border-radius: 3px;
+}
+
+.textField:focus {
+    outline: 2px solid dodgerblue;
+}

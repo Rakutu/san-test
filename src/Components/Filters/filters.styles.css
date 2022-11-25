@@ -1,0 +1,25 @@
+.filersRoot {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.genderRoot {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+}
+
+.checkBoxGroupTitle {
+    margin: 0;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.ageRoot {
+    display: grid;
+    grid-gap: 10px 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
