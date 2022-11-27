@@ -5,7 +5,7 @@ import { UserItem } from './UserItem';
 import './usersList.styles.css';
 
 
-export const Userlist = () => {
+export const UserList = () => {
   const dispatch = useDispatch();
   const {
     showUsers,
@@ -14,9 +14,7 @@ export const Userlist = () => {
   } = useSelector(({ users }) => users);
 
   useEffect(() => {
-    if (showUsers.length === 0) {
-      dispatch(fetchUsers());
-    }
+    dispatch(fetchUsers());
   }, []);
 
   if (status === 'rejected' && error) {
@@ -34,7 +32,7 @@ export const Userlist = () => {
   return (
     <section>
       {showUsers.length > 0 && (
-        <ul className='userslist'>
+        <ul className='usersList'>
           {showUsers.map(user => <UserItem key={user.email} user={user}/>)}
         </ul>
       )}

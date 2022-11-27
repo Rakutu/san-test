@@ -1,5 +1,5 @@
 import React from 'react';
-import { dateFormats, yeaerFormatter } from '../../../services/utils/dateFormats';
+import { dateFormatter, yearFormatter } from '../../../services/utils/dateFormats';
 import './userItem.styles.css';
 
 
@@ -17,7 +17,7 @@ export const UserItem = ({ user }) => {
         <p className='userName'>{userName}</p>
         <div>
           <span className='userPropName'>Возраст: </span>
-          <span className='userProp'>{yeaerFormatter.format(user.dob.age)}</span>
+          <span className='userProp'>{yearFormatter.format(user.dob.age)}</span>
         </div>
         <div>
           <span className='userPropName'>Пол: </span>
@@ -29,7 +29,7 @@ export const UserItem = ({ user }) => {
         </div>
         <div>
           <span className='userPropName'>Дата регистрации: </span>
-          <span className='userProp'>{dateFormats(user.registered.date)}</span>
+          <span className='userProp'>{dateFormatter(user.registered.date)}</span>
         </div>
       </div>
     </li>

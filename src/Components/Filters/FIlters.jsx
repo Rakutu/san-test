@@ -17,11 +17,16 @@ export const Filters = () => {
   };
 
   const handleChangeAgeFilter = (filter) => {
-    dispatch(changeAgeFilter({ ageFilter: filter }));
-  }
+    dispatch(changeAgeFilter({
+      ageFilter: {
+        ...ageFilter,
+        [filter]: !ageFilter[filter],
+      },
+    }));
+  };
 
    return (
-      <div  className='filersRoot'>
+      <div  className='filtersRoot'>
         <div className='genderRoot'>
           <p className='checkBoxGroupTitle'>Фильтр по полу</p>
           <RadioCheckbox
@@ -50,11 +55,11 @@ export const Filters = () => {
           />
         </div>
         <div>
-          <p className='checkBoxGroupTitle'>Фильтр по полу</p>
+          <p className='checkBoxGroupTitle'>Фильтр по возрастным группам</p>
           <div className='ageRoot'>
             <Checkbox
               id='0-18'
-              checked={ageFilter === '0-18'}
+              checked={ageFilter['0-18']}
               label='0-18'
               name='age'
               value='0-18'
@@ -62,7 +67,7 @@ export const Filters = () => {
             />
             <Checkbox
               id='18-35'
-              checked={ageFilter === '18-35'}
+              checked={ageFilter['18-35']}
               label='18-35'
               name='age'
               value='18-35'
@@ -70,7 +75,7 @@ export const Filters = () => {
             />
             <Checkbox
               id='35-65'
-              checked={ageFilter === '35-65'}
+              checked={ageFilter['35-65']}
               label='35-65'
               name='age'
               value='35-65'
@@ -78,7 +83,7 @@ export const Filters = () => {
             />
             <Checkbox
               id='65+'
-              checked={ageFilter === '65'}
+              checked={ageFilter['65']}
               label='65+'
               name='age'
               value='65'

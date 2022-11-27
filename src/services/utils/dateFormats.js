@@ -1,4 +1,4 @@
-export const dateFormats = (date) => {
+export const dateFormatter = (date) => {
   const fullDate = new Date(date);
   const year = fullDate.getFullYear();
 
@@ -15,7 +15,7 @@ export const dateFormats = (date) => {
   return `${validDay}.${validMonth}.${year}`
 }
 
-export const yeaerFormatter = new Intl.NumberFormat('ru', {
+export const yearFormatter = new Intl.NumberFormat('ru', {
   style: 'unit',
   unit: 'year',
   unitDisplay: 'long',

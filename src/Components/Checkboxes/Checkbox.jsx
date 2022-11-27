@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-export const Checkbox = ({ id, checked, label, onChange, ...rest }) => {
+export const Checkbox = ({ id, checked, label, onChange, ...otherProps }) => {
   const visibleInputClass = checked
     ? 'visibleCheckbox checkboxChecked'
     : 'visibleCheckbox';
@@ -9,7 +9,7 @@ export const Checkbox = ({ id, checked, label, onChange, ...rest }) => {
   return (
     <div className='checkboxRoot'>
       <input
-        {...rest}
+        {...otherProps}
         id={id}
         type='checkbox'
         className='invisibleInput'

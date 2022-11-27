@@ -2,7 +2,7 @@ import React from 'react';
 import './checkboxes.styles.css';
 
 
-export const RadioCheckbox = ({ id, checked, label, onChange, ...rest }) => {
+export const RadioCheckbox = ({ id, checked, label, onChange, ...otherProps }) => {
   const visibleInputClass = checked
     ? 'visibleRadio radioChecked'
     : 'visibleRadio';
@@ -10,7 +10,7 @@ export const RadioCheckbox = ({ id, checked, label, onChange, ...rest }) => {
   return (
     <div className='checkboxRoot'>
       <input
-        {...rest}
+        {...otherProps}
         id={id}
         type='radio'
         className='invisibleInput'

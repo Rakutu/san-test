@@ -1,4 +1,4 @@
-.filersRoot {
+.filtersRoot {
     display: flex;
     margin-bottom: 20px;
 }
@@ -22,4 +22,10 @@
     grid-gap: 10px 20px;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+    .filtersRoot {
+        flex-direction: column;
+    }
 }

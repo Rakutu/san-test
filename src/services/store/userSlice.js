@@ -1,11 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchUsers } from './asyncActions';
 import { getFiltersFromLs, setFiltersToLs } from '../utils/filtersLocalStorage';
-import { setUsersToLs } from '../utils/usersLocalStorage';
 
 
-const sortUsersByAge = (users, from = -999, to = 999) => {
-  return users.filter(({ dob }) =>  dob.age > from && dob.age < to);
+const sortUsersByAge = (users, ageFilter) => {
+  const newUsers = [];
+  let allUsers = true;
+
+  users.forEach(user => {
+    for (let ageInterval in ageFilter) {
+      if (ageFilter[ageInterval]) {
+        allUsers = false;
+        const [ from, to ] = ageInterval.split('-');
+
+        if (user.dob.age > from && user.dob.age < to) {
+          newUsers.push(user)
+        }
+      }
+    }
+  });
+
+  return allUsers
+    ? users
+    : newUsers;
 }
 
 const sortUsersByGender = (users, filter) => {
@@ -22,11 +39,34 @@ const sortUsersBySubstring = (users, substring) => {
   );
 }
 
+const sortUsers = (state) => {
+  const {
+    users,
+    ageFilter,
+    genderFilter,
+    substring,
+  } = state;
+
+  let newUsers = [ ...users ];
+  if (genderFilter !== 'ALL') newUsers = sortUsersByGender(newUsers, genderFilter);
+
+  newUsers = sortUsersByAge(newUsers, ageFilter);
+  newUsers = sortUsersBySubstring(newUsers, substring);
+
+  return newUsers;
+}
+
 const initialState = {
   users: [],
   showUsers: [],
   genderFilter: 'ALL',
-  ageFilter: null,
+  ageFilter: {
+    '0-18': false,
+    '18-35': false,
+    '35-65': false,
+    '65': false,
+  },
+  substring: '',
   status: null,
   error: null,
 }
@@ -46,61 +86,40 @@ const usersSlice = createSlice({
   reducers: {
     changeGenderFilter(state, action) {
       const genderFilter = action.payload.genderFilter;
-      const newShowUsers = sortUsersByGender(state.users, genderFilter);
 
-      state.showUsers = newShowUsers;
       state.genderFilter = genderFilter;
-      state.ageFilter = null;
+      state.showUsers = sortUsers(state);
 
       setFiltersToLs({
-        genderFilter,
         ageFilter: state.ageFilter,
+        substring: state.substring,
+        genderFilter,
       });
-      setUsersToLs(newShowUsers);
     },
     changeAgeFilter(state, action) {
       const ageFilter = action.payload.ageFilter;
 
-      if (state.ageFilter !== ageFilter) {
-        const [ from, to ] = ageFilter.split('-');
-        const newShowUsers = sortUsersByAge(state.users, from, to);
-
-        state.showUsers = newShowUsers;
-        state.ageFilter = ageFilter;
-        state.genderFilter = 'ALL';
-
-        setFiltersToLs({
-          ageFilter,
-          genderFilter: state.genderFilter,
-        });
-        setUsersToLs(newShowUsers);
-
-        return
-      }
-
-      state.ageFilter = null;
-      state.showUsers = state.users;
+      state.ageFilter = ageFilter;
+      state.showUsers = sortUsers(state);
 
       setFiltersToLs({
-        ageFilter: null,
         genderFilter: state.genderFilter,
+        substring: state.substring,
+        ageFilter,
       });
-      setUsersToLs(state.users);
     },
-    changeShowUsersBySubstring(state, action) {
+    changeSubstring(state, action) {
       const substring = action.payload.substring;
-      const newShowUsers = sortUsersBySubstring(state.users, substring);
 
-      state.showUsers = newShowUsers;
-      state.ageFilter = null;
-      state.genderFilter = 'ALL';
+      state.substring = substring;
+      state.showUsers = sortUsers(state);
 
       setFiltersToLs({
-        ageFilter: null,
+        ageFilter: state.ageFilter,
         genderFilter: state.genderFilter,
+        substring,
       });
-      setUsersToLs(newShowUsers);
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -116,18 +135,19 @@ const usersSlice = createSlice({
         const filtersFromLS = getFiltersFromLs();
 
         if (filtersFromLS) {
+          state.substring = filtersFromLS.substring;
           state.genderFilter = filtersFromLS.genderFilter;
           state.ageFilter = filtersFromLS.ageFilter;
         }
 
         state.users = action.payload;
-        state.showUsers = action.payload;
+        state.showUsers = sortUsers(state);
       })
       .addCase(fetchUsers.rejected, setError)
       .addCase(fetchUsers.pending, setLoading);
   }
 })
 
-export const { changeAgeFilter, changeGenderFilter, changeShowUsersBySubstring } = usersSlice.actions;
+export const { changeAgeFilter, changeGenderFilter, changeSubstring } = usersSlice.actions;
 
 export default usersSlice.reducer;

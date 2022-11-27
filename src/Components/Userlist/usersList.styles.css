@@ -1,4 +1,4 @@
-.userslist {
+.usersList {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(4, 1fr);
@@ -8,13 +8,13 @@
 }
 
 @media (max-width: 1199px) {
-    .userslist {
+    .usersList {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .userslist {
+    .usersList {
         grid-template-columns: 1fr;
     }
 }
